@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Symptom Checker{% endblock %}
+
+{% block content %}
+    <div class="flex items-center justify-center bg-gray-100 p-4">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-lg w-full">
+            <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-6">Symptom Checker</h1>
+            <p class="text-center text-gray-500 mb-8">Select up to 4 symptoms for a preliminary analysis.</p>
+
+            {% if error %}
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md" role="alert">
+                    <p class="font-bold">Error</p>
+                    <p>{{ error }}</p>
+                </div>
+            {% endif %}
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="{{ form.symptom_1.id_for_label }}" class="block text-sm font-medium text-gray-700">Symptom 1</label>
+                        {{ form.symptom_1 }}
+                    </div>
+                    <div>
+                        <label for="{{ form.symptom_2.id_for_label }}" class="block text-sm font-medium text-gray-700">Symptom 2</label>
+                        {{ form.symptom_2 }}
+                    </div>
+                    <div>
+                        <label for="{{ form.symptom_3.id_for_label }}" class="block text-sm font-medium text-gray-700">Symptom 3</label>
+                        {{ form.symptom_3 }}
+                    </div>
+                    <div>
+                        <label for="{{ form.symptom_4.id_for_label }}" class="block text-sm font-medium text-gray-700">Symptom 4</label>
+                        {{ form.symptom_4 }}
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <label for="{{ form.symptom_text.id_for_label }}" class="block text-sm font-medium text-gray-700">Or enter a symptom directly</label>
+                    {{ form.symptom_text }}
+                </div>
+                
+                <div>
+                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
+                        Analyze Symptoms
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

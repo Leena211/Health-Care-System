@@ -1,53 +1,37 @@
-<li>
-    <b>Data-Source: </b><a href="https://www.kaggle.com/datasets/dhivyeshrk/diseases-and-symptoms-dataset">https://www.kaggle.com/datasets/dhivyeshrk/diseases-and-symptoms-dataset
-    </li>
-  
-### DESCRIPTION
-<li>Unique_Symptoms: 378</li>
-<li>Preview: 'anxiety and nervousness', 'depression', 'shortness of breath',
-       'depressive or psychotic symptoms', 'sharp chest pain', 'dizziness',
-       'insomnia', 'abnormal involuntary movements', 'chest tightness',
-       'palpitations',
-       ...
-       'stuttering or stammering', 'problems with orgasm', 'nose deformity',
-       'lump over jaw', 'sore in nose', 'hip weakness', 'back swelling',
-       'ankle stiffness or tightness', 'ankle weakness', 'neck weakness'</li>     
-<li>
-    Unique Diseases: 773
-</li>
-<li>Preview: 'panic disorder', 'vocal cord polyp', 'turner syndrome',
-       'cryptorchidism', 'poisoning due to ethylene glycol',
-       'atrophic vaginitis', 'fracture of the hand',
-       'cellulitis or abscess of mouth', 'eye alignment disorder',
-       'headache after lumbar puncture', 'pyloric stenosis',
-       'salivary gland disorder', 'osteochondrosis',
-    ......
-       'bladder obstruction', 'melanoma', 'cervical disorder',
-       'laryngitis', 'dyshidrosis', 'poisoning due to opioids',
-       'diaper rash', 'lichen planus', 'gastroduodenal ulcer',
-       'inguinal hernia', 'eczema', 'asperger syndrome', 'mucositis',
-       'paronychia', 'open wound of the jaw', 'white blood cell disease',
-       'kaposi sarcoma', 'spondylolisthesis', 'pseudotumor cerebri',
-       'conjunctivitis due to virus', 'open wound of the nose'</li>
-<li>Total Samples: ~246000</li>
+Health Care System
+About the Project
+This web application is a preliminary symptom checker that uses a machine learning model to provide users with a potential disease prediction, a severity rating, and a list of recommended precautions based on their symptoms. The goal of this project is to create a helpful, easy-to-use tool that empowers users with information about their health.
 
-### Features
-<li>Data-Preprocessing Using Pandas,Numpy,Scikit-learn,mlxtend</li>
-<li>Exploratory Data-analysis and visualizations for each unique disease.</li>
-<li>DataTransformation using OnehotEncoder and TransactionEncoder for Encoding Categorical Features</li>
-<li>FPgrowth and apriori for association rule-mining</li>
-<li>Feature extraction using TfidfVectorizer on precautions</li>
-<li>Severity mapping</li>
-<li>Evaluation metrics confidence,support and jaccard similarity index</li>
+Disclaimer: This tool is for informational purposes only and is not a substitute for professional medical advice. Always consult a healthcare professional for diagnosis and treatment.
 
-### Tech Stack
-<li>Python 3.x</li>
-<li>Pandas,Numpy</li>
-<li>Plotly,matplotlib,seaborn</li>
-<li>Scikit-learn,mlxtend</li>
-<li>Streamlit,jupyter lab</li>
+Features
+Intuitive Symptom Input: Users can easily select up to four symptoms from a predefined list or type in a specific symptom for analysis.
 
-### Demonstrations
-<img width="900" height="960" alt="HEALTH-IMG" src="https://github.com/user-attachments/assets/79ba7705-3c8a-4bf6-81d9-90c7586df226" />
+Disease Prediction: The system leverages a pre-trained machine learning model to predict the most likely disease based on the combination of symptoms entered.
 
-<img width="900" height="961" alt="HEALTH-IMG2" src="https://github.com/user-attachments/assets/c311de75-e639-41ee-909b-4c816657e2d0" />
+Severity Rating: Each analysis provides a severity level (Low, Medium, or High) to give users a quick understanding of their potential condition.
+
+Recommended Precautions: The application suggests practical precautions and advice related to the predicted condition.
+
+Visual Data Representation: Results include a dynamic pie chart that visualizes the probability of several possible diseases, making the analysis easy to understand.
+
+User Authentication: The application includes a secure system for user registration and login, allowing users to save their analysis history.
+
+Technologies Used
+Backend: Django
+
+Frontend: HTML, CSS (Tailwind CSS for styling)
+
+Machine Learning: scikit-learn (used for the model)
+
+Data Visualization: Chart.js
+
+Database: Django's built-in database (or a similar solution)
+
+How to Use
+Select Symptoms: On the main page, choose at least two symptoms from the dropdown menus. You can also enter a symptom in the text box.
+
+Analyze: Click the "Analyze Symptoms" button to submit your information to the model.
+
+View Results: You will be redirected to a results page displaying the disease prediction, severity, precautions, and a pie chart of potential diseases.
+

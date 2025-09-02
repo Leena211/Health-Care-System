@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Health Recommendation System{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Custom styles for a more elegant look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* A very light gray */
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .btn-primary {
+            /* Replaced @apply with the full class list */
+            background-color: #4a90e2; /* bg-blue-600 */
+            color: white; /* text-white */
+            font-weight: bold; /* font-bold */
+            padding-top: 0.5rem; /* py-2 */
+            padding-bottom: 0.5rem; /* py-2 */
+            padding-left: 1rem; /* px-4 */
+            padding-right: 1rem; /* px-4 */
+            border-radius: 0.5rem; /* rounded-lg */
+            transition: background-color 0.3s ease; /* transition-colors */
+        }
+        .btn-primary:hover {
+            background-color: #357ABD; /* hover:bg-blue-700 */
+        }
+        .card {
+            /* Replaced @apply with the full class list */
+            background-color: white; /* bg-white */
+            padding: 2rem; /* p-8 */
+            border-radius: 1rem; /* rounded-2xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            border: 1px solid #e2e8f0; /* border border-gray-200 */
+        }
+        .form-input {
+            /* Replaced @apply with the full class list */
+            width: 100%; /* w-full */
+            padding: 0.5rem 1rem; /* px-4 py-2 */
+            border: 1px solid #d1d5db; /* border border-gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            transition: box-shadow 0.2s ease, border-color 0.2s ease; /* transition-shadow */
+        }
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.5); /* focus:ring-blue-500 */
+            border-color: #60a5fa; /* focus:border-blue-500 */
+            outline: none; /* Removes default outline */
+        }
+        .alert {
+            /* Replaced @apply with the full class list */
+            padding: 1rem; /* p-4 */
+            margin-bottom: 1rem; /* mb-4 */
+            font-size: 0.875rem; /* text-sm */
+            border-radius: 0.5rem; /* rounded-lg */
+        }
+        .alert-danger {
+            /* Replaced @apply with the full class list */
+            background-color: #fee2e2; /* bg-red-100 */
+            color: #b91c1c; /* text-red-700 */
+        }
+        .alert-success {
+            /* Replaced @apply with the full class list */
+            background-color: #dcfce7; /* bg-green-100 */
+            color: #15803d; /* text-green-700 */
+        }
+        .alert-warning {
+            /* Replaced @apply with the full class list */
+            background-color: #fef3c7; /* bg-yellow-100 */
+            color: #b45309; /* text-yellow-700 */
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <nav class="bg-white p-4 navbar sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{% url 'home' %}" class="text-2xl font-bold text-gray-800">MediCare AI</a>
+            <div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="text-gray-600 hover:text-blue-600 mr-4">Profile</a>
+                    <a href="{% url 'logout' %}" class="btn-primary">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-gray-600 hover:text-blue-600 mr-4">Login</a>
+                    <a href="{% url 'signup' %}" class="btn-primary">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto mt-8 mb-8 p-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-white p-4 text-center">
+        <p>&copy; 2025 MediCare AI. All rights reserved.</p>
+        <p class="text-sm text-gray-400 mt-1">Disclaimer: This is a demo application and not for real medical diagnosis.</p>
+    </footer>
+</body>
+</html>

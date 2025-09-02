@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Analysis Results{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center p-4 md:p-8">
+    <div class="bg-white rounded-lg shadow-md p-6 space-y-6 w-full max-w-4xl">
+
+        <!-- Severity Alert -->
+        {% if severity == 'High' %}
+            <div class="p-4 rounded-lg bg-red-100 text-red-700 border-l-4 border-red-500" role="alert">
+                <h3 class="font-bold text-lg">High Severity Detected</h3>
+                <p class="text-sm">Your symptoms indicate a potentially serious condition. Immediate medical attention or a hospital visit is strongly recommended.</p>
+            </div>
+        {% elif severity == 'Medium' %}
+            <div class="p-4 rounded-lg bg-yellow-100 text-yellow-700 border-l-4 border-yellow-500" role="alert">
+                <h3 class="font-bold text-lg">Medium Severity Detected</h3>
+                <p class="text-sm">Please monitor your symptoms closely. Consulting a doctor is recommended.</p>
+            </div>
+        {% else %}
+            <div class="p-4 rounded-lg bg-green-100 text-green-700 border-l-4 border-green-500" role="alert">
+                <h3 class="font-bold text-lg">Low Severity</h3>
+                <p class="text-sm">The system predicts a low severity. However, always consult a healthcare professional for medical advice.</p>
+            </div>
+        {% endif %}
+
+        <!-- Disease Prediction -->
+        <div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Disease Prediction</h3>
+            {% if predictions and predictions.0 != "No direct match found." and predictions.0 != "Model files missing." and predictions.0 != "No close match found." and "Error in" not in predictions.0 %}
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="text-gray-700">The most likely condition is: <strong class="text-blue-600 font-bold text-lg">{{ predictions.0|capfirst|cut:"_" }}</strong></p>
+                </div>
+            {% elif possible_diseases %}
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="text-gray-700">No direct match was found for your symptoms. Here are some possibilities:</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 mt-2">
+                        {% for disease, percentage in possible_diseases.items %}
+                            <li>{{ disease|capfirst|cut:"_" }} ({{ percentage }}% match)</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- Pie Chart for possible diseases -->
+                <div class="mt-8 text-center">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Probability of Possible Diseases</h4>
+                    <img src="{{ chart_url }}" alt="Pie chart showing disease probabilities" class="mx-auto w-full max-w-md rounded-lg shadow-lg">
+                </div>
+            {% else %}
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="text-gray-700">No close matches were found based on the symptoms provided. Please select or enter different symptoms for another analysis.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Precautions -->
+        <div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Recommended Precautions</h3>
+            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                {% for precaution in precautions %}
+                    <li>{{ precaution|capfirst }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <!-- Back to form button -->
+        <a href="{% url 'home' %}" class="w-full mt-6 py-3 px-4 bg-gray-200 text-gray-700 font-semibold rounded-lg shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 inline-block text-center">Analyze New Symptoms</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'core/base.html' %}
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto px-4 py-8">
+<div class="bg-white dark:bg-gray-800 shadow-xl rounded-lg overflow-hidden p-6 md:p-8">
+<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Hello, {{ user.username }}!</h1>
+<p class="text-gray-600 dark:text-gray-400 mb-6">Here is a summary of your health history.</p>
+{% if health_history %}
+<!-- Chart Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+<div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-md">
+<h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Symptom Trends</h2>
+<canvas id="symptomChart"></canvas>
+</div>
+<div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-md">
+<h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Disease Likelihood</h2>
+<canvas id="diseaseChart"></canvas>
+</div>
+</div>
+<!-- Past History Section -->
+<div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-md">
+<h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Past Analysis History</h2>
+<div class="space-y-4">
+{% for entry in health_history %}
+<div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+<p class="text-sm font-medium text-gray-500 dark:text-gray-400">Analysis on: {{ forloop.counter }}</p>
+</div>
+<div class="mt-2">
+<p class="text-gray-700 dark:text-gray-300">
+<span class="font-semibold">Symptoms:</span>
+{{ entry.symptoms|join:", "|capfirst }}
+</p>
+<p class="text-gray-700 dark:text-gray-300">
+<span class="font-semibold">Prediction:</span>
+{% if entry.predictions|first == "No direct match found." %}
+No direct match found. Possible diseases:
+{% for disease, score in entry.possible_diseases.items %}
+{{ disease }} ({{ score }}%),
+{% endfor %}
+{% else %}
+{{ entry.predictions|join:", "|capfirst }}
+{% endif %}
+</p>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+{% else %}
+<p class="text-gray-600 dark:text-gray-400 text-center py-10">You have no previous analysis history. Start by entering some symptoms on the home page!</p>
+{% endif %}
+</div>
+</div>
+<!-- Add Chart.js for data visualization -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+// Function to safely parse JSON from Django template tags
+function safeJsonParse(dataId) {
+const element = document.getElementById(dataId);
+if (!element || !element.textContent) {
+return { labels: [], data: [] };
+}
+try {
+// Remove any accidental whitespace or control characters
+const dataString = element.textContent.trim();
+return JSON.parse(dataString);
+} catch (e) {
+console.error('Failed to parse JSON for ' + dataId, e);
+return { labels: [], data: [] };
+}
+}
+
+    const symptomData = safeJsonParse('symptom-data');
+    const diseaseData = safeJsonParse('disease-data');
+
+    if (symptomData.labels && symptomData.labels.length > 0) {
+        const symptomChartCtx = document.getElementById('symptomChart').getContext('2d');
+        new Chart(symptomChartCtx, {
+            type: 'bar',
+            data: {
+                labels: symptomData.labels,
+                datasets: [{
+                    label: 'Symptom Frequency',
+                    data: symptomData.data,
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+    if (diseaseData.labels && diseaseData.labels.length > 0) {
+        const diseaseChartCtx = document.getElementById('diseaseChart').getContext('2d');
+        new Chart(diseaseChartCtx, {
+            type: 'pie',
+            data: {
+                labels: diseaseData.labels,
+                datasets: [{
+                    label: 'Predicted Diseases',
+                    data: diseaseData.data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)'
+                    ],
+                    borderColor: 'rgba(255, 255, 255, 0.8)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#e5e7eb'
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
+
+</script>
+
+<!-- The following scripts are needed to pass data from Django to JavaScript safely -->
+
+<script type="text/javascript" id="symptom-data">
+{{ symptom_data|safe }}
+</script>
+
+<script type="text/javascript" id="disease-data">
+{{ disease_data|safe }}
+</script>
+
+{% endblock %}
