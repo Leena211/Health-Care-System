@@ -1,0 +1,4 @@
+django
+gunicorn
+scikit-learn
+joblib
