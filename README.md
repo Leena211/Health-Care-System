@@ -1,3 +1,5 @@
+Data-Source: https://www.kaggle.com/datasets/dhivyeshrk/diseases-and-symptoms-dataset
+
 Health Care System
 About the Project
 This web application is a preliminary symptom checker that uses a machine learning model to provide users with a potential disease prediction, a severity rating, and a list of recommended precautions based on their symptoms. The goal of this project is to create a helpful, easy-to-use tool that empowers users with information about their health.
